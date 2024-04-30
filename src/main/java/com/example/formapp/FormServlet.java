@@ -1,28 +1,26 @@
 package com.example.formapp;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.*;
+import java.io.IOException;
 
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
 
-@WebServlet(name = "helloServlet", value = "/hello-servlet")
-public class HelloServlet extends HttpServlet {
-    private String message;
+public class FormServlet extends HttpServlet {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String name = request.getParameter("name");
+        String surname = request.getParameter("surname");
+        String email = request.getParameter("email");
+        String address = request.getParameter("address");
 
-    public void init() {
-        message = "Hello World!";
-    }
+        request.getSession().setAttribute("name", name);
+        request.getSession().setAttribute("surname", surname);
+        request.getSession().setAttribute("email",email);
+        request.getSession().setAttribute("address",address);
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html");
-
-        // Hello
-        PrintWriter out = response.getWriter();
-        out.println("<html><body>");
-        out.println("<h1>" + message + "</h1>");
-        out.println("</body></html>");
-    }
-
-    public void destroy() {
+        response.sendRedirect("displayInfo.jsp");
     }
 }
